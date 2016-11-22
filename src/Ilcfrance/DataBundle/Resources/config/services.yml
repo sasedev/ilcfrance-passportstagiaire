@@ -1,0 +1,4 @@
+services:
+#    ilcfrance_data.example:
+#        class: Ilcfrance\DataBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

@@ -1,0 +1,43 @@
+# Doctrine MongoDB Configuration
+doctrine_mongodb:
+    proxy_namespace:      MongoDBODMProxies
+    proxy_dir:            "%kernel.cache_dir%/doctrine/odm/mongodb/Proxies"
+    auto_generate_proxy_classes:  true
+    hydrator_namespace:   Hydrators
+    hydrator_dir:         "%kernel.cache_dir%/doctrine/odm/mongodb/Hydrators"
+    auto_generate_hydrator_classes:  true
+    default_document_manager:  ~
+    default_connection:   ~
+    default_database: "%mongodb_database%"
+    connections:
+        default:
+            server: mongodb://%mongodb_host%:%mongodb_port%
+#            options: {}
+            options:
+                connect:              ~
+                username: "%mongodb_user%"
+                password: "%mongodb_pass%"
+                db: "%mongodb_auth%"
+    document_managers:
+        default:
+            connection:                 ~
+            database:                   ~
+            default_repository_class:   Doctrine\ODM\MongoDB\DocumentRepository
+            repository_factory:         ~
+            logging:                    true
+            auto_mapping: true
+            retry_connect:              0
+            retry_query:                0
+            mappings:
+                IlcfranceDataBundle:
+                    mapping:              true
+                    type: annotation
+                    dir: "%kernel.root_dir%/../src/Ilcfrance/DataBundle/MongoDocument"
+                    prefix: Ilcfrance\DataBundle\MongoDocument
+                    alias: IlcfranceDataBundle
+#            metadata_cache_driver:
+#                type: memcache
+#                class: Doctrine\Common\Cache\MemcacheCache
+#                host: localhost
+#                port: 11211
+#                instance_class: Memcache

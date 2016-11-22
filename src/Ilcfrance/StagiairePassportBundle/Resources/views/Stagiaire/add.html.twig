@@ -1,0 +1,60 @@
+{% extends 'IlcfranceResBundle::admin.tpl.html.twig' %}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+	<li><a href="{{ path('ilcfrance_stagiaire_passport_homepage') }}">{{ faIco('dashboard') }} {{'breadcrumb.admin.dasboard'|trans|raw}}</a></li>
+	<li><a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_list') }}">{{faIco('user-circle')}} {{'Stagiaire.breadcrumb.admin.list'|trans|raw}}</a></li>
+	<li class="active"><a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_addGet') }}">{{faIco('plus')}} {{'Stagiaire.breadcrumb.admin.add'|trans()|raw}}</a></li>
+</ol>
+{% endblock breadcrumb %}
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well well-sm text-right">
+			<a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_list') }}" class="btn btn-primary">{{ faIco('th') }} {{ 'action.list'|trans }}</a>
+		</div>
+		<div class="box box-primary">
+			<div class="box-header">
+				<h3 class="box-title">{{ 'Stagiaire.tlabel.admin.add'|trans|raw}}</h3>
+			</div>
+			<div class="box-body">
+				{{form_start(StagiaireAddForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_addPost'), 'style': 'horizontal'})}}
+				{{form_row(StagiaireAddForm.lastName, {'label_col': 3, 'widget_col': 8})}}
+				{{form_row(StagiaireAddForm.firstName, {'label_col': 3, 'widget_col': 8})}}
+				{{form_row(StagiaireAddForm.address, {'label_col': 3, 'widget_col': 8})}}
+				{{form_row(StagiaireAddForm.town, {'label_col': 3, 'widget_col': 8})}}
+				{{form_row(StagiaireAddForm.job, {'label_col': 3, 'widget_col': 8})}}
+				{{form_row(StagiaireAddForm.level, {'label_col': 3, 'widget_col': 8})}}
+				{{form_row(StagiaireAddForm.courses, {'label_col': 3, 'widget_col': 8})}}
+				{{form_row(StagiaireAddForm.needs, {'label_col': 3, 'widget_col': 8, 'attr': {'class': 'wysiwyg'} })}}
+				<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnAdd'|trans|raw}}</button></div></div>
+				{{form_end(StagiaireAddForm)}}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock main %}
+{% block htmlBodyScripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(function() {
+	$('textarea.wysiwyg').each(function() {
+		var options = {
+			theme: "modern",
+			content_css : '{{ absolute_url(asset('/res/css/app.min.css')) }}',
+			plugins: [ "advlist autolink lists link image charmap preview hr anchor pagebreak", "searchreplace wordcount visualblocks visualchars code fullscreen", "nonbreaking save table contextmenu directionality", "template paste textcolor" ],
+			language : '{{ (app.request.locale~'_tinymce')|trans }}',
+			toolbar: "insertfile undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | preview "
+		};
+		$this = $(this);
+		if($this.is('[required]')) {
+			options.oninit = function(editor) {
+				editor.on('change', function(e) {
+					editor.save();
+				});
+			}
+		}
+		$this.tinymce(options);
+	});
+});
+</script>
+{% endblock htmlBodyScripts %}

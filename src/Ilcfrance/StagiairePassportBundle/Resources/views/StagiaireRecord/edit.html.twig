@@ -1,0 +1,120 @@
+{% extends 'IlcfranceResBundle::admin.tpl.html.twig' %}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+	<li><a href="{{ path('ilcfrance_stagiaire_passport_homepage') }}">{{ faIco('dashboard') }} {{'breadcrumb.admin.dasboard'|trans|raw}}</a></li>
+	<li><a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_list') }}">{{faIco('user-circle')}} {{'Stagiaire.breadcrumb.admin.list'|trans|raw}}</a></li>
+	<li class="active"><a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_editGet', {'id': stagiaireRecord.stagiaire.id}) }}">{{faIco('edit')}} {{'Stagiaire.breadcrumb.admin.edit'|trans({'%stagiaire%': stagiaireRecord.stagiaire.fullName})|raw}}</a></li>
+	<li class="active"><a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_record_editGet', {'id': stagiaireRecord.id}) }}">{{faIco('edit')}} {{'StagiaireRecord.breadcrumb.admin.edit'|trans({'%stagiaire%': stagiaireRecord.stagiaire.fullName, '%dtStart%':stagiaireRecord.recordDate|localeDate('medium'),'%hStart%':stagiaireRecord.recordDate|localeDate('none', 'short') })|raw}}</a></li>
+</ol>
+{% endblock breadcrumb %}
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well well-sm text-right">
+			<a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_list') }}" class="btn btn-primary">{{ faIco('th') }} {{ 'action.list'|trans }}</a>
+			<a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_addGet') }}" class="btn btn-primary">{{ faIco('plus') }} {{ 'action.add'|trans }}</a>
+		</div>
+		<div class="nav-tabs-custom">
+			<ul class="nav nav-tabs">
+				<li {%if tabActive==1%} class="active"{%endif%}><a href="#overview" data-toggle="tab">{{'StagiaireRecord.tab.admin.overview'|trans|raw}}</a></li>
+				<li {%if tabActive==2%} class="active"{%endif%}><a href="#edit" data-toggle="tab">{{'StagiaireRecord.tab.admin.edit'|trans|raw}}</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane fade{%if tabActive==1%} in active{%endif%}" id="overview">
+					<div class="panel box box-primary">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.overview'|trans}}</h3></div>
+						<div class="box-body">
+							<div class="row">
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.stagiaire'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaireRecord.stagiaire.fullName}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.teacher'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaireRecord.teacherName}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.recordDate'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaireRecord.recordDate|localeDate('medium')}} {{'_at'|trans}} {{stagiaireRecord.recordDate|localeDate('none', 'short')}}&nbsp;</div>
+								<div class="col-lg-12">&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.worksCovered'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaireRecord.worksCovered|raw}}&nbsp;</div>
+								<div class="col-lg-12">&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.comments'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaireRecord.comments|raw}}&nbsp;</div>
+								<div class="col-lg-12">&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.homeworks'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaireRecord.homeworks|raw}}&nbsp;</div>
+								<div class="col-lg-12">&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.dtCrea'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaireRecord.dtCrea|localeDate('medium')}} {{'_at'|trans}} {{stagiaireRecord.dtCrea|localeDate('none', 'short')}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.dtUpdate'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaireRecord.dtUpdate|localeDate('medium')}} {{'_at'|trans}} {{stagiaireRecord.dtUpdate|localeDate('none', 'short')}}&nbsp;</div>
+								<br>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade{%if tabActive==2%} in active{%endif%}" id="edit">
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'StagiaireRecord.tlabel.admin.editRecordDate'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireRecordUpdateRecordDateForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_record_editPost', {'id': stagiaireRecord.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireRecordUpdateRecordDateForm.recordDate, {'label_col': 3, 'widget_col': 8, 'widget_col': 8, 'attr': {'class': 'datetimepicker'} })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireRecordUpdateRecordDateForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'StagiaireRecord.tlabel.admin.editWorksCovered'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireRecordUpdateWorksCoveredForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_record_editPost', {'id': stagiaireRecord.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireRecordUpdateWorksCoveredForm.worksCovered, {'label_col': 3, 'widget_col': 8, 'widget_col': 8, 'attr': {'class': 'wysiwyg'} })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireRecordUpdateWorksCoveredForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'StagiaireRecord.tlabel.admin.editComments'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireRecordUpdateCommentsForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_record_editPost', {'id': stagiaireRecord.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireRecordUpdateCommentsForm.comments, {'label_col': 3, 'widget_col': 8, 'widget_col': 8, 'attr': {'class': 'wysiwyg'} })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireRecordUpdateCommentsForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'StagiaireRecord.tlabel.admin.editHomeworks'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireRecordUpdateHomeworksForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_record_editPost', {'id': stagiaireRecord.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireRecordUpdateHomeworksForm.homeworks, {'label_col': 3, 'widget_col': 8, 'widget_col': 8, 'attr': {'class': 'wysiwyg'} })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireRecordUpdateHomeworksForm)}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock main %}
+{% block htmlBodyScripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(function() {
+	$('textarea.wysiwyg').each(function() {
+		var options = {
+			theme: "modern",
+			content_css : '{{ absolute_url(asset('/res/css/app.min.css')) }}',
+			plugins: [ "advlist autolink lists link image charmap preview hr anchor pagebreak", "searchreplace wordcount visualblocks visualchars code fullscreen", "nonbreaking save table contextmenu directionality", "template paste textcolor" ],
+			language : '{{ (app.request.locale~'_tinymce')|trans }}',
+			toolbar: "insertfile undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | preview "
+		};
+		$this = $(this);
+		if($this.is('[required]')) {
+			options.oninit = function(editor) {
+				editor.on('change', function(e) {
+					editor.save();
+				});
+			}
+		}
+		$this.tinymce(options);
+	});
+});
+</script>
+{% endblock htmlBodyScripts %}

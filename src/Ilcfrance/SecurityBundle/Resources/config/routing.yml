@@ -1,0 +1,37 @@
+_security_logout:
+    path:  /logout
+
+_security_login:
+    path:     /login
+    defaults: { _controller: "IlcfranceSecurityBundle:Login:login" }
+
+_security_check:
+    path:  /login_check
+    methods: [POST]
+
+_security_lost_id:
+    path:  /lostId
+    defaults: { _controller: "IlcfranceSecurityBundle:Lost:id" }
+
+_security_lost_password:
+    path:  /lostPassword
+    defaults: { _controller: "IlcfranceSecurityBundle:Lost:password" }
+
+_security_lost_genpassword:
+    path:  /generateNewPassword/{id}/{code}
+    defaults: { _controller: "IlcfranceSecurityBundle:Lost:newpassword" }
+
+_security_myProfileGet:
+    path:     /myProfile
+    defaults: { _controller: "IlcfranceSecurityBundle:Profile:get" }
+    methods: [GET]
+
+_security_myProfilePost:
+    path:     /myProfile
+    defaults: { _controller: "IlcfranceSecurityBundle:Profile:post" }
+    methods: [POST]
+
+_security_myProfileDeletPic:
+    path:     /myProfileDeleteAvatar
+    defaults: { _controller: "IlcfranceSecurityBundle:Profile:deleteAvatar" }
+    methods: [GET]

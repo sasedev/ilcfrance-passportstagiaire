@@ -1,0 +1,218 @@
+{% extends 'IlcfranceResBundle::admin.tpl.html.twig' %}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+	<li><a href="{{ path('ilcfrance_stagiaire_passport_homepage') }}">{{ faIco('dashboard') }} {{'breadcrumb.admin.dasboard'|trans|raw}}</a></li>
+	<li><a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_list') }}">{{faIco('user-circle')}} {{'Stagiaire.breadcrumb.admin.list'|trans|raw}}</a></li>
+	<li class="active"><a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_editGet', {'id': stagiaire.id}) }}">{{faIco('edit')}} {{'Stagiaire.breadcrumb.admin.edit'|trans({'%stagiaire%': stagiaire.fullName})|raw}}</a></li>
+</ol>
+{% endblock breadcrumb %}
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well well-sm text-right">
+			<a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_list') }}" class="btn btn-primary">{{ faIco('th') }} {{ 'action.list'|trans }}</a>
+			<a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_addGet') }}" class="btn btn-primary">{{ faIco('plus') }} {{ 'action.add'|trans }}</a>
+		</div>
+		<div class="nav-tabs-custom">
+			<ul class="nav nav-tabs">
+				<li {%if tabActive==1%} class="active"{%endif%}><a href="#overview" data-toggle="tab">{{'Stagiaire.tab.admin.overview'|trans|raw}}</a></li>
+				<li {%if tabActive==2%} class="active"{%endif%}><a href="#edit" data-toggle="tab">{{'Stagiaire.tab.admin.edit'|trans|raw}}</a></li>
+				<li {%if tabActive==3%} class="active"{%endif%}><a href="#addRecord" data-toggle="tab">{{'Stagiaire.tab.admin.addRecord'|trans|raw}}</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane fade{%if tabActive==1%} in active{%endif%}" id="overview">
+					<div class="panel box box-primary">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.overview'|trans}}</h3></div>
+						<div class="box-body">
+							<div class="row">
+								<div class="col-lg-3 text-right">{{'Stagiaire.lastName'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.lastName}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.firstName'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.firstName}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.initLevel'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.initLevel}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.level'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.level}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.job'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.job}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.town'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.town}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.address'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.address}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.courses'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.courses}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.needs'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.needs|raw}}&nbsp;</div>
+								<div class="col-lg-12">&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.records'|trans|raw}} :</div>
+								<div class="col-lg-9">
+									{{bsLabel(stagiaire.records|length)}}&nbsp;
+								</div>
+								<div class="col-lg-12">&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.dtCrea'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.dtCrea|localeDate('medium')}} {{'_at'|trans}} {{stagiaire.dtCrea|localeDate('none', 'short')}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.dtUpdate'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.dtUpdate|localeDate('medium')}} {{'_at'|trans}} {{stagiaire.dtUpdate|localeDate('none', 'short')}}&nbsp;</div>
+								<br>
+							</div>
+						</div>
+					</div>
+					{% for record in stagiaire.records %}
+					<div class="panel box box-info">
+						<div class="box-header">
+							<h3 class="box-title">{{record.recordDate|localeDate('medium')}} {{ '_at'|trans }} {{record.recordDate|localeDate('none', 'medium')}} ({{record.teacherName}})</h3>
+							{% if is_granted('ROLE_ADMIN') %}
+							<a class="pull-right btn btn-sm btn-danger deleteConfirmStagiaireRecord" href="{{path('ilcfrance_stagiaire_passport_stagiaire_record_delete',{'id':record.id})}}">{{ faIco('trash') }}</a>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN') or app.user.id == record.teacher.id %}
+							<a class="pull-right btn btn-sm btn-success" href="{{path('ilcfrance_stagiaire_passport_stagiaire_record_editGet',{'id':record.id})}}">{{ faIco('edit') }}</a>
+							{% endif %}
+						</div>
+						<div class="box-body">
+							<div class="row">
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.worksCovered'|trans|raw}} :</div>
+								<div class="col-lg-9">{{record.worksCovered|raw}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.comments'|trans|raw}} :</div>
+								<div class="col-lg-9">{{record.comments|raw}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'StagiaireRecord.homeworks'|trans|raw}} :</div>
+								<div class="col-lg-9">{{record.homeworks|raw}}&nbsp;</div>
+								<div class="col-lg-12">&nbsp;</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<div class="tab-pane fade{%if tabActive==2%} in active{%endif%}" id="edit">
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.editLastName'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireUpdateLastNameForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireUpdateLastNameForm.lastName, {'label_col': 3, 'widget_col': 8 })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireUpdateLastNameForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.editFirstName'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireUpdateFirstNameForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireUpdateFirstNameForm.firstName, {'label_col': 3, 'widget_col': 8 })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireUpdateFirstNameForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.editLevel'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireUpdateLevelForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireUpdateLevelForm.level, {'label_col': 3, 'widget_col': 8 })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireUpdateLevelForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.editJob'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireUpdateJobForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireUpdateJobForm.job, {'label_col': 3, 'widget_col': 8 })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireUpdateJobForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.editTown'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireUpdateTownForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireUpdateTownForm.town, {'label_col': 3, 'widget_col': 8 })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireUpdateTownForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.editAddress'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireUpdateAddressForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireUpdateAddressForm.address, {'label_col': 3, 'widget_col': 8 })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireUpdateAddressForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.editNeeds'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireUpdateNeedsForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireUpdateNeedsForm.needs, {'label_col': 3, 'widget_col': 8, 'attr': {'class': 'wysiwyg'} })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireUpdateNeedsForm)}}
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade{%if tabActive==3%} in active{%endif%}" id="addRecord">
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.addRecord'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireRecordAddForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireRecordAddForm.recordDate, {'label_col': 3, 'widget_col': 8, 'widget_col': 8, 'attr': {'class': 'datetimepicker'} })}}
+							{{form_row(StagiaireRecordAddForm.worksCovered, {'label_col': 3, 'widget_col': 8, 'widget_col': 8, 'attr': {'class': 'wysiwyg'} })}}
+							{{form_row(StagiaireRecordAddForm.comments, {'label_col': 3, 'widget_col': 8, 'widget_col': 8, 'attr': {'class': 'wysiwyg'} })}}
+							{{form_row(StagiaireRecordAddForm.homeworks, {'label_col': 3, 'widget_col': 8, 'widget_col': 8, 'attr': {'class': 'wysiwyg'} })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnAdd'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireRecordAddForm)}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="deleteConfirmStagiaireRecord" class="modal modal-info fade in" tabindex="-1" stagiaire="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 class="modal-title">{{'StagiaireRecord.delete.confirm.title'|trans|raw}}</h3>
+			</div>
+			<div class="modal-body">
+				{{'StagiaireRecord.delete.confirm.txt'|trans|raw}}
+			</div>
+			<div class="modal-footer">
+				<a href="" class="btn btn-primary danger btn-outline pull-left">{{'_yes'|trans|raw}}</a>
+				<button type="button" class="btn btn-danger btn-outline pull-right" data-dismiss="modal">{{'_no'|trans|raw}}</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock main %}
+{% block htmlBodyScripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(function() {
+	$('textarea.wysiwyg').each(function() {
+		var options = {
+			theme: "modern",
+			content_css : '{{ absolute_url(asset('/res/css/app.min.css')) }}',
+			plugins: [ "advlist autolink lists link image charmap preview hr anchor pagebreak", "searchreplace wordcount visualblocks visualchars code fullscreen", "nonbreaking save table contextmenu directionality", "template paste textcolor" ],
+			language : '{{ (app.request.locale~'_tinymce')|trans }}',
+			toolbar: "insertfile undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | preview "
+		};
+		$this = $(this);
+		if($this.is('[required]')) {
+			options.oninit = function(editor) {
+				editor.on('change', function(e) {
+					editor.save();
+				});
+			}
+		}
+		$this.tinymce(options);
+	});
+		
+	$('.deleteConfirmStagiaireRecord').on("click", function(e) {
+		e.preventDefault();
+		var lnk = $(this).attr('href');
+		modalDeleteBtn = $('#deleteConfirmStagiaireRecord').find('.danger');
+		modalDeleteBtn.attr('href', lnk);
+		$('#deleteConfirmStagiaireRecord').modal('show');
+	});
+});
+</script>
+{% endblock htmlBodyScripts %}

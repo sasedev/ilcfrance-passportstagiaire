@@ -1,0 +1,159 @@
+security:
+    access_denied_url:    ~ # Example: /foo/error403
+    # strategy can be: none, migrate, invalidate
+    session_fixation_strategy:  migrate
+    hide_user_not_found:  true
+    always_authenticate_before_granting:  true
+    erase_credentials:    true
+    access_decision_manager:
+        strategy:             affirmative # One of affirmative, consensus, unanimous
+        allow_if_all_abstain:  false
+        allow_if_equal_granted_denied:  true
+#    acl:
+#        # any name configured in doctrine.dbal section
+#        connection:           ~
+#        cache:
+#            id:                   ~
+#            prefix:               sf2_acl_
+#        provider:             ~
+#        tables:
+#            class:                acl_classes
+#            entry:                acl_entries
+#            object_identity:      acl_object_identities
+#            object_identity_ancestors:  acl_object_identity_ancestors
+#            security_identity:    acl_security_identities
+#        voter:
+#            allow_if_object_identity_unavailable:  true
+
+    encoders:
+        Ilcfrance\DataBundle\OrmEntity\User:
+            algorithm:            pbkdf2
+            hash_algorithm:       sha512
+            encode_as_base64:     true
+            iterations:           1000
+            key_length:           40
+    providers:
+        user_provider:
+            entity:
+                class: "IlcfranceDataBundle:User"
+#                property: username
+#                manager_name:       ~
+
+        chain_provider:
+            chain:
+                providers: ["user_provider"]
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt))/
+            security: false
+            anonymous:  true
+        resources:
+            pattern:  ^/(css|js|images|img|imgs|fonts|webfonts|assets|bundles|res)/
+            security: false
+            anonymous:  true
+        secoff:
+            pattern:  ^/(login|login_check|logout|register|lostid|lostpass|resetpass)/
+            security: false
+            anonymous:  true
+        main:
+            pattern:      .*
+#            host: admin\.example\.com
+            # restrict the firewall to specific http methods
+#            methods: [GET, POST]
+#            request_matcher: some.service.id
+#            access_denied_url: /foo/error403
+#            access_denied_handler: some.service.id
+#            entry_point: some.service.id
+            
+            # manages where each firewall stores session information
+            # See "Firewall Context" below for more details
+#            context: context_key
+#            stateless: false
+            provider: chain_provider
+            form_login:
+                check_path:     '/login_check'
+#                login_path:     '/login'
+                login_path:     '%schemes%://%domain%/login'
+
+                use_forward:    false
+
+                # login success redirecting options (read further below)
+                always_use_default_target_path: false
+                default_target_path: /
+                target_path_parameter:  "LoginForm[target_path]"
+                use_referer:    true
+
+                # login failure redirecting options (read further below)
+#                failure_path:    /foo
+#                failure_forward: false
+#                failure_path_parameter: _failure_path
+#                failure_handler: some.service.id
+#                success_handler: login.listener
+                
+
+                # field names for the username and password fields
+                username_parameter:     "LoginForm[username]"
+                password_parameter:     "LoginForm[password]"
+
+                # csrf token options
+#                csrf_parameter:       _csrf_token
+#                csrf_token_id:        authenticate
+#                csrf_token_generator: my.csrf_token_generator.id
+                
+
+                # by default, the login form *must* be a POST, not a GET
+                post_only:      true
+                remember_me:    true
+
+                # by default, a session must exist before submitting an authentication request
+                # if false, then Request::hasPreviousSession is not called during authentication
+                require_previous_session: true
+                
+            remember_me:
+#                token_provider: name
+                secret: "%secret%"
+                name: IlcfranceSec
+                lifetime: 2592000 # optional, it is set to 30 days here
+                path: ^/
+                domain: '.%domain%'
+                secure: false
+#                httponly: true
+                always_remember_me: true
+                remember_me_parameter: "LoginForm[remember_me]"
+                
+            logout:
+                path:   '/logout'
+#                target: '/'
+                target: '%schemes%://%domain%/'
+                invalidate_session: true
+#                delete_cookies:
+#                    a: { path: null, domain: null }
+#                    b: { path: null, domain: null }
+#                handlers: [some.service.id, another.service.id]
+#                success_handler: logout_listener
+                
+            security: true
+            anonymous:    true
+    access_control:
+        # Liste des pages accessibles à tous les utilisateurs (ne pas toucher)
+        - { path: ^/_wdt/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/_profiler/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/css/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/js/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/images/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/img/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/imgs/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/fonts/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/webfonts/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/assets/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/bundles/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/res/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/lostid, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/lostpassword, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetpass.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/.*, roles: ROLE_USER }
+    access_denied_url: /

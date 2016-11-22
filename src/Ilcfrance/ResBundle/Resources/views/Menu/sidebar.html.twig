@@ -1,0 +1,123 @@
+{%if menu_active is not defined%}
+{%set menu_active=''%}
+{%endif%}
+{%if smenu_active is not defined%}
+{%set smenu_active=''%}
+{%endif%}
+{%if tabActive is not defined%}
+{%set tabActive=1%}
+{%endif%}
+{%if admmenu_active is not defined%}
+{%set admmenu_active=''%}
+{%endif%}
+{%if sadmmenu_active is not defined%}
+{%set sadmmenu_active=''%}
+{%endif%}
+			<aside class="main-sidebar">
+				<section class="sidebar">
+					<ul class="sidebar-menu">
+						<li class="header">{{ 'sidebar.admin.dashboard'|trans }}</li>
+						<li{% if (admmenu_active =='home') %} class="active"{% endif %}>
+							<a href="{{ path('ilcfrance_stagiaire_passport_homepage') }}">
+								<i class="fa fa-dashboard"></i>
+								<span>{{ 'sidebar.admin.home'|trans }}</span>
+							</a>
+						</li>
+						{% if is_granted('ROLE_SUPERADMIN') %}
+						<li{% if (admmenu_active == 'locales' or admmenu_active == 'locales_list' or admmenu_active == 'locales_add' or admmenu_active == 'locales_edit') %} class="active"{% endif %}>
+							<a href="#">
+								<i class="fa fa-language text-danger"></i>
+								<span>{{ 'Locale.sidebar.adminmenu'|trans }}</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							<ul class="treeview-menu">
+								<li{% if (admmenu_active =='locales_list') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_locale_list') }}"><i class="fa fa-th"></i> {{ 'action.list'|trans }}</a>
+								</li>
+								<li{% if (admmenu_active =='locales_add') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_locale_addGet') }}"><i class="fa fa-plus"></i> {{ 'action.add'|trans }}</a>
+								</li>
+							</ul>
+							</a>
+						</li>
+						{% endif %}
+						{% if is_granted('ROLE_SUPERADMIN') %}
+						<li{% if (admmenu_active == 'roles' or admmenu_active == 'roles_list' or admmenu_active == 'roles_add' or admmenu_active == 'roles_edit') %} class="active"{% endif %}>
+							<a href="#">
+								<i class="fa fa-flash text-danger"></i>
+								<span>{{ 'Role.sidebar.adminmenu'|trans }}</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							<ul class="treeview-menu">
+								<li{% if (admmenu_active =='roles_list') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_role_list') }}"><i class="fa fa-th"></i> {{ 'action.list'|trans }}</a>
+								</li>
+								<li{% if (admmenu_active =='roles_add') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_role_addGet') }}"><i class="fa fa-plus"></i> {{ 'action.add'|trans }}</a>
+								</li>
+							</ul>
+							</a>
+						</li>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') %}
+						<li{% if (admmenu_active == 'users' or admmenu_active == 'users_list' or admmenu_active == 'users_add' or admmenu_active == 'users_edit') %} class="active"{% endif %}>
+							<a href="#">
+								<i class="fa fa-users text-danger"></i>
+								<span>{{ 'User.sidebar.adminmenu'|trans }}</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							<ul class="treeview-menu">
+								<li{% if (admmenu_active =='users_list') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_user_list') }}"><i class="fa fa-th"></i> {{ 'action.list'|trans }}</a>
+								</li>
+								<li{% if (admmenu_active =='users_add') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_user_addGet') }}"><i class="fa fa-plus"></i> {{ 'action.add'|trans }}</a>
+								</li>
+							</ul>
+							</a>
+						</li>
+						{% endif %}
+						<li{% if (admmenu_active == 'stagiaires' or admmenu_active == 'stagiaires_list' or admmenu_active == 'stagiaires_add' or admmenu_active == 'stagiaires_edit' or admmenu_active == 'stagiaires_import') %} class="active"{% endif %}>
+							<a href="#">
+								<i class="fa fa-user-circle"></i>
+								<span>{{ 'Stagiaire.sidebar.adminmenu'|trans }}</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							<ul class="treeview-menu">
+								<li{% if (admmenu_active =='stagiaires_list') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_list') }}"><i class="fa fa-th"></i> {{ 'action.list'|trans }}</a>
+								</li>
+								{% if is_granted('ROLE_ADMIN') %}
+								<li{% if (admmenu_active =='stagiaires_add') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_stagiaire_addGet') }}"><i class="fa fa-plus"></i> {{ 'action.add'|trans }}</a>
+								</li>
+								{% endif %}
+							</ul>
+							</a>
+						</li>
+						<li{% if (admmenu_active == 'docs' or admmenu_active == 'docs_list' or admmenu_active == 'docs_add' or admmenu_active == 'docs_edit') %} class="active"{% endif %}>
+							<a href="#">
+								<i class="fa fa-file"></i>
+								<span>{{ 'Doc.sidebar.adminmenu'|trans }}</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							<ul class="treeview-menu">
+								<li{% if (admmenu_active =='docs_list') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_doc_list') }}"><i class="fa fa-th"></i> {{ 'action.list'|trans }}</a>
+								</li>
+								{% if is_granted('ROLE_ADMIN') %}
+								<li{% if (admmenu_active =='docs_add') %} class="active"{% endif %}>
+									<a href="{{ path('ilcfrance_stagiaire_passport_doc_addGet') }}"><i class="fa fa-plus"></i> {{ 'action.add'|trans }}</a>
+								</li>
+								{% endif %}
+							</ul>
+							</a>
+						</li>
+					</ul>
+				</section>
+			</aside>

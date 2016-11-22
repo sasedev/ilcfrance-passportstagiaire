@@ -1,0 +1,30 @@
+parameters:
+    ilcfrance_security.role_hierarchy.role_manager.role_class: Ilcfrance\DataBundle\OrmEntity\Role
+    ilcfrance_security.role_hierarchy.role_manager.default.class: Ilcfrance\SecurityBundle\Security\RoleManager
+    ilcfrance_security.role_hierarchy.class: Ilcfrance\SecurityBundle\Security\RoleHierarchy
+    ilcfrance_security.login_success.class: Ilcfrance\SecurityBundle\Listener\LoginSuccess
+    ilcfrance_security.users_activity.class: Ilcfrance\SecurityBundle\Listener\UsersActivityListener
+
+services:
+#    ilcfrance_security.example:
+#        class: IlcfranceSecurityBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    ilcfrance_security.role_hierarchy.role_manager.default:
+        class: "%ilcfrance_security.role_hierarchy.role_manager.default.class%"
+        arguments: ['@doctrine', '%ilcfrance_security.role_hierarchy.role_manager.role_class%']
+
+    security.role_hierarchy:
+        class: "%ilcfrance_security.role_hierarchy.class%"
+        arguments: ['@ilcfrance_security.role_hierarchy.role_manager.default', '%ilcfrance_security.role_hierarchy.role_manager.role_class%']
+
+    ilcfrance_security.login_success:
+        class: "%ilcfrance_security.login_success.class%"
+        arguments: ['@doctrine']
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
+
+    ilcfrance_security.users_activity:
+        class: "%ilcfrance_security.users_activity.class%"
+        arguments: ['@security.token_storage', '@doctrine']
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onCoreController }

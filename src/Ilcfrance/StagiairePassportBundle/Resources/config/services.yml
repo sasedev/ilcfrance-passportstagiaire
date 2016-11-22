@@ -1,0 +1,4 @@
+services:
+#    ilcfrance_stagiaire_passport.example:
+#        class: Ilcfrance\StagiairePassportBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
