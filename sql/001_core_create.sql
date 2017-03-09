@@ -68,6 +68,8 @@ CREATE TABLE "ilcfrance_stagaires" (
 	"lname"                                                             TEXT NULL,
 	"address"                                                           TEXT NULL,
 	"town"                                                              TEXT NULL,
+	"phone"                                                             TEXT NULL,
+	"mobile"                                                            TEXT NULL,
 	"job"                                                               TEXT NULL,
 	"initlevel"                                                         TEXT NULL,
 	"level"                                                             TEXT NULL,
