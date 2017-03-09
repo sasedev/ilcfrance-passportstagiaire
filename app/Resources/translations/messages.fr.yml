@@ -50,7 +50,7 @@ _prev: Précédent
 _next: Suivant
 options.choose: 'Choisissez une option'
 Options.choose: 'Choisissez une option'
-indexof: "Index de %dir%" 
+indexof: "Index de %dir%"
 
 Entity.field: Champs
 Entity.val: Valeur
@@ -359,6 +359,12 @@ Stagiaire.town.placeholder: "Ville"
 Stagiaire.address: "Adresse"
 Stagiaire.address.label: "Adresse :"
 Stagiaire.address.placeholder: "Adresse"
+Stagiaire.phone: "Tel Fix"
+Stagiaire.phone.label: "Tel Fix :"
+Stagiaire.phone.placeholder: "Tel Fix"
+Stagiaire.mobile: "Tel Mobile"
+Stagiaire.mobile.label: "Tel Mobile :"
+Stagiaire.mobile.placeholder: "Tel Mobile"
 Stagiaire.courses: "Cours"
 Stagiaire.courses.label: "Cours :"
 Stagiaire.courses.placeholder: "Cours"
@@ -374,6 +380,7 @@ Stagiaire.records.label: "Historique de Cours :"
 Stagiaire.fullName: "Nom complet"
 Stagiaire.fullName.label: "Nom complet :"
 Stagiaire.fullName.placeholder: "Nom complet"
+Stagiaire.excel.label: "Importer depuis Excel :"
 
 Stagiaire.sidebar.adminmenu: "Stagiaires"
 
@@ -406,6 +413,7 @@ Stagiaire.tlabel.admin.editJob: "Modification de l'Emploi"
 Stagiaire.tlabel.admin.editTown: "Modification de la Ville"
 Stagiaire.tlabel.admin.editAddress: "Modification de l'Adresse"
 Stagiaire.tlabel.admin.editNeeds: "Modification des Besoins"
+Stagiaire.tlabel.admin.editPhone: "Modification Numéros de Téléphone"
 Stagiaire.tlabel.admin.addRecord: "Ajouter un historique de Cours"
 Stagiaire.tlabel.admin.stagiaireActions: "Historique des Actions"
 

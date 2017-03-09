@@ -39,6 +39,10 @@
 								<div class="col-lg-9">{{stagiaire.town}}&nbsp;</div>
 								<div class="col-lg-3 text-right">{{'Stagiaire.address'|trans|raw}} :</div>
 								<div class="col-lg-9">{{stagiaire.address}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.phone'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.phone}}&nbsp;</div>
+								<div class="col-lg-3 text-right">{{'Stagiaire.mobile'|trans|raw}} :</div>
+								<div class="col-lg-9">{{stagiaire.mobile}}&nbsp;</div>
 								<div class="col-lg-3 text-right">{{'Stagiaire.courses'|trans|raw}} :</div>
 								<div class="col-lg-9">{{stagiaire.courses}}&nbsp;</div>
 								<div class="col-lg-3 text-right">{{'Stagiaire.needs'|trans|raw}} :</div>
@@ -99,6 +103,16 @@
 							{{form_row(StagiaireUpdateFirstNameForm.firstName, {'label_col': 3, 'widget_col': 8 })}}
 							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
 							{{form_end(StagiaireUpdateFirstNameForm)}}
+						</div>
+					</div>
+					<div class="panel box box-danger">
+						<div class="box-header"><h3 class="box-title">{{'Stagiaire.tlabel.admin.editPhone'|trans}}</h3></div>
+						<div class="box-body">
+							{{form_start(StagiaireUpdatePhoneForm, {'method':'POST', 'action': path('ilcfrance_stagiaire_passport_stagiaire_editPost', {'id': stagiaire.id}), 'style': 'horizontal'})}}
+							{{form_row(StagiaireUpdatePhoneForm.phone, {'label_col': 3, 'widget_col': 8 })}}
+							{{form_row(StagiaireUpdatePhoneForm.mobile, {'label_col': 3, 'widget_col': 8 })}}
+							<div class="form-group"><div class="col-lg-offset-3 col-lg-2"><button class="btn-primary btn" type="submit">{{glyphIco('save')}} {{'action.btnEdit'|trans|raw}}</button></div></div>
+							{{form_end(StagiaireUpdatePhoneForm)}}
 						</div>
 					</div>
 					<div class="panel box box-danger">

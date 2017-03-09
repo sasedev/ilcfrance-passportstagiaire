@@ -11,6 +11,7 @@ use Ilcfrance\StagiairePassportBundle\Form\Stagiaire\UpdateLastNameTForm as Stag
 use Ilcfrance\StagiairePassportBundle\Form\Stagiaire\UpdateLevelTForm as StagiaireUpdateLevelTForm;
 use Ilcfrance\StagiairePassportBundle\Form\Stagiaire\UpdateNeedsTForm as StagiaireUpdateNeedsTForm;
 use Ilcfrance\StagiairePassportBundle\Form\Stagiaire\UpdateTownTForm as StagiaireUpdateTownTForm;
+use Ilcfrance\StagiairePassportBundle\Form\Stagiaire\UpdatePhoneTForm as StagiaireUpdatePhoneTForm;
 use Ilcfrance\StagiairePassportBundle\Form\StagiaireRecord\AddTForm as StagiaireRecordAddTForm;
 use Ilcfrance\DataBundle\OrmEntity\Stagiaire;
 use Ilcfrance\DataBundle\OrmEntity\StagiaireRecord;
@@ -330,6 +331,7 @@ class StagiaireController extends IlcfranceController
 				$stagiaireUpdateLevelForm = $this->createForm(StagiaireUpdateLevelTForm::class, $stagiaire);
 				$stagiaireUpdateNeedsForm = $this->createForm(StagiaireUpdateNeedsTForm::class, $stagiaire);
 				$stagiaireUpdateTownForm = $this->createForm(StagiaireUpdateTownTForm::class, $stagiaire);
+				$stagiaireUpdatePhoneForm = $this->createForm(StagiaireUpdatePhoneTForm::class, $stagiaire);
 
 				$stagiaireRecord = new StagiaireRecord();
 				$teacher = $this->getSecurityTokenStorage()->getToken()->getUser();
@@ -355,6 +357,7 @@ class StagiaireController extends IlcfranceController
 				$this->addTwigVar('StagiaireUpdateLevelForm', $stagiaireUpdateLevelForm->createView());
 				$this->addTwigVar('StagiaireUpdateNeedsForm', $stagiaireUpdateNeedsForm->createView());
 				$this->addTwigVar('StagiaireUpdateTownForm', $stagiaireUpdateTownForm->createView());
+				$this->addTwigVar('StagiaireUpdatePhoneForm', $stagiaireUpdatePhoneForm->createView());
 				$this->addTwigVar('StagiaireRecordAddForm', $stagiaireRecordAddForm->createView());
 
 				$this->addTwigVar('admmenu_active', 'stagiaires_edit');
@@ -402,6 +405,7 @@ class StagiaireController extends IlcfranceController
 				$stagiaireUpdateLevelForm = $this->createForm(StagiaireUpdateLevelTForm::class, $stagiaire);
 				$stagiaireUpdateNeedsForm = $this->createForm(StagiaireUpdateNeedsTForm::class, $stagiaire);
 				$stagiaireUpdateTownForm = $this->createForm(StagiaireUpdateTownTForm::class, $stagiaire);
+				$stagiaireUpdatePhoneForm = $this->createForm(StagiaireUpdatePhoneTForm::class, $stagiaire);
 
 				$stagiaireRecord = new StagiaireRecord();
 				$teacher = $this->getSecurityTokenStorage()->getToken()->getUser();
@@ -570,6 +574,25 @@ class StagiaireController extends IlcfranceController
 							'%stagiaire%' => $stagiaire->getFullName()
 						)));
 					}
+				} elseif (isset($reqData['StagiaireUpdatePhoneForm'])) {
+					$this->addTwigVar('tabActive', 2);
+					$this->getSession()->set('tabActive', 2);
+					$stagiaireUpdatePhoneForm->handleRequest($request);
+					if ($stagiaireUpdatePhoneForm->isValid()) {
+						$em->persist($stagiaire);
+						$em->flush();
+						$this->addFlash('success', $this->translate('Stagiaire.edit.success', array(
+							'%stagiaire%' => $stagiaire->getFullName()
+						)));
+
+						return $this->redirect($urlFrom);
+					} else {
+						$em->refresh($stagiaire);
+
+						$this->addFlash('error', $this->translate('Stagiaire.edit.failure', array(
+							'%stagiaire%' => $stagiaire->getFullName()
+						)));
+					}
 				} elseif (isset($reqData['StagiaireRecordAddForm'])) {
 					$this->addTwigVar('tabActive', 3);
 					$this->getSession()->set('tabActive', 3);
@@ -600,6 +623,7 @@ class StagiaireController extends IlcfranceController
 				$this->addTwigVar('StagiaireUpdateLevelForm', $stagiaireUpdateLevelForm->createView());
 				$this->addTwigVar('StagiaireUpdateNeedsForm', $stagiaireUpdateNeedsForm->createView());
 				$this->addTwigVar('StagiaireUpdateTownForm', $stagiaireUpdateTownForm->createView());
+				$this->addTwigVar('StagiaireUpdatePhoneForm', $stagiaireUpdatePhoneForm->createView());
 				$this->addTwigVar('StagiaireRecordAddForm', $stagiaireRecordAddForm->createView());
 
 				$this->addTwigVar('admmenu_active', 'stagiaires_edit');
