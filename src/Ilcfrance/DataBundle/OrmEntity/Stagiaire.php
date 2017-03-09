@@ -58,6 +58,18 @@ class Stagiaire implements EntityTraceable
 
 	/**
 	 *
+	 * @var string @ORM\Column(name="phone", type="text", nullable=true)
+	 */
+	protected $phone;
+
+	/**
+	 *
+	 * @var string @ORM\Column(name="mobile", type="text", nullable=true)
+	 */
+	protected $mobile;
+
+	/**
+	 *
 	 * @var string @ORM\Column(name="job", type="text", nullable=true)
 	 */
 	protected $job;
@@ -214,6 +226,50 @@ class Stagiaire implements EntityTraceable
 	public function setTown($town)
 	{
 		$this->town = $town;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	/**
+	 *
+	 * @param string $phone
+	 *
+	 * @return Stagiaire
+	 */
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getMobile()
+	{
+		return $this->mobile;
+	}
+
+	/**
+	 *
+	 * @param string $mobile
+	 *
+	 * @return Stagiaire
+	 */
+	public function setMobile($mobile)
+	{
+		$this->mobile = $mobile;
 
 		return $this;
 	}
