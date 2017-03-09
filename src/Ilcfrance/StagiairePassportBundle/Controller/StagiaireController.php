@@ -215,6 +215,8 @@ class StagiaireController extends IlcfranceController
 					$initLevel = \trim(\strval($worksheet->getCellByColumnAndRow(3, $row)->getValue()));
 					$town = \trim(\strval($worksheet->getCellByColumnAndRow(4, $row)->getValue()));
 					$courses = \trim(\strval($worksheet->getCellByColumnAndRow(5, $row)->getValue()));
+					$mobile = \trim(\strval($worksheet->getCellByColumnAndRow(7, $row)->getValue()));
+					$phone = \trim(\strval($worksheet->getCellByColumnAndRow(8, $row)->getValue()));
 
 					if ($lastName != '' and $firstName != '') {
 						$stagiaire = $em->getRepository('IlcfranceDataBundle:Stagiaire')->findOneBy(array(
@@ -231,11 +233,43 @@ class StagiaireController extends IlcfranceController
 							$stagiaire->setInitLevel($initLevel);
 							$stagiaire->setTown($town);
 							$stagiaire->setCourses($courses);
+							$stagiaire->setPhone($phone);
+							$stagiaire->setMobile($mobile);
 
 							$em->persist($stagiaire);
 						} else {
+							$update = false;
+							if (\trim($job) != "") {
+								$stagiaire->setJob($job);
+								$update = true;
+							}
+							if (\trim($initLevel) != "") {
+								$stagiaire->setInitLevel($initLevel);
+								$update = true;
+							}
+							if (\trim($town) != "") {
+								$stagiaire->setTown($town);
+								$update = true;
+							}
+							if (\trim($courses) != "") {
+								$stagiaire->setCourses($courses);
+								$update = true;
+							}
+							if (\trim($phone) != "") {
+								$stagiaire->setPhone($phone);
+								$update = true;
+							}
+							if (\trim($mobile) != "") {
+								$stagiaire->setMobile($mobile);
+								$update = true;
+							}
 							$lineUnprocessed++;
-							$log .= "le Stagiaire " . $lastName . ' ' . $firstName . ' existe déjà<br>';
+							if ($update) {
+								$em->persist($stagiaire);
+								$log .= "le Stagiaire " . $lastName . ' ' . $firstName . ' existe déjà mais a été mis à jour<br>';
+							} else {
+								$log .= "le Stagiaire " . $lastName . ' ' . $firstName . ' existe déjà<br>';
+							}
 						}
 					} else {
 						$lineError++;
