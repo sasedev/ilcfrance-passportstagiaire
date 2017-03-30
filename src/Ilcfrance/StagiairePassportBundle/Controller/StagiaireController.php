@@ -357,6 +357,7 @@ class StagiaireController extends IlcfranceController
 							$stagiaire->setCourses($courses);
 
 							$em->persist($stagiaire);
+							$log .= "le Stagiaire " . $lastName . ' ' . $firstName . ' est nouveau<br>';
 						} else {
 							$update = false;
 							if (\trim($address) != "") {
