@@ -320,7 +320,7 @@ class StagiaireController extends IlcfranceController
 				$lineError = 0;
 				$em = $this->getEntityManager();
 
-				for ($row = 3; $row <= $highestRow; $row++) {
+				for ($row = 2; $row <= $highestRow; $row++) {
 					$lineRead++;
 
 					$lastName = \strtolower(\trim(\strval($worksheet->getCellByColumnAndRow(0, $row)->getValue())));
