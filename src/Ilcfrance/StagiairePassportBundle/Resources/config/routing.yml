@@ -115,6 +115,10 @@ ilcfrance_stagiaire_passport_stagiaire_list:
     path:     /trainees
     defaults: { _controller: "IlcfranceStagiairePassportBundle:Stagiaire:list" }
 
+ilcfrance_stagiaire_passport_stagiaire_export:
+    path:     /trainees/export
+    defaults: { _controller: "IlcfranceStagiairePassportBundle:Stagiaire:export" }
+
 ilcfrance_stagiaire_passport_stagiaire_addGet:
     path:     /trainee/add
     defaults: { _controller: "IlcfranceStagiairePassportBundle:Stagiaire:addGet" }
